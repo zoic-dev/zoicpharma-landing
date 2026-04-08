@@ -5,15 +5,43 @@ import { useState } from "react";
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      navigate("/thank-you");
-    }, 1500);
+
+    if (loading) return;
+    setLoading(true);
+
+    const formData = new FormData(e.target);
+
+    const data = {
+      name: formData.get("name"),
+      phone: formData.get("phone"),
+      email: formData.get("email"),
+      city: formData.get("city"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch("https://script.google.com/macros/s/AKfycbxM7MO9hUhQL4GCncQ5zof0ZDrxfFywV96ixX2h2nnIO-zwpWUFWq_-P1sTacgHBK3s/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      if (result.status === "success") {
+        navigate("/thank-you");
+      } else {
+        throw new Error("Sheet error");
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Submission failed");
+      setLoading(false);
+    }
   };
 
   const scrollToSection = (id) => {
@@ -29,7 +57,7 @@ export default function LandingPage() {
       <header className="bg-white/70 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
         <nav className="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
           <a href="/">
-            <img src="https://www.zoicpharmaceuticals.com/wp-content/uploads/2025/02/zoicnew.png" className="w-50 h-auto"/>
+            <img src="https://www.zoicpharmaceuticals.com/wp-content/uploads/2025/02/zoicnew.png" className="w-50 h-auto" />
           </a>
 
           <div className="hidden md:flex items-center gap-8 font-headline text-sm font-semibold">
@@ -39,7 +67,7 @@ export default function LandingPage() {
             <button onClick={() => scrollToSection('manufacturing')} className="text-slate-600 hover:text-primary transition-colors">About Us</button>
             <button onClick={() => scrollToSection('contact')} className="text-slate-600 hover:text-primary transition-colors">Certifications</button>
           </div>
-          <button 
+          <button
             onClick={() => scrollToSection('contact')}
             className="bg-primary text-white px-6 py-2.5 rounded-xl font-bold hover:bg-primary-dark active:scale-95 transition-all shadow-lg shadow-primary/20"
           >
@@ -53,15 +81,15 @@ export default function LandingPage() {
         <section className="relative min-h-[80vh] flex items-center overflow-hidden bg-surface-container">
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-surface-container via-surface-container/60 to-transparent z-10"></div>
-            <img 
-              alt="Botanical Ingredients" 
-              className="w-full h-full object-cover" 
+            <img
+              alt="Botanical Ingredients"
+              className="w-full h-full object-cover"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUwzOHs12UokeFMhc7jMY1jUc14pPziJ4zkm25B0TrJB5MUWiwJdIlAKlAEYV2JHUQwhi0W5FrJkEFL0ojkrNfD0SnTAPGVYitrn5P5joGgJf2-CTnJlx3oy_IuCUCKjPYzEOpwv9Hb-0G4LtIxa76WJkhspEG3De9BRgv4Pq6HNd2QndyY1FJN0YWME6tFYHg9hQHvbThp2xtW46GnAMkJQCmGXNjVneWNPTrmwgV_Bg19WAxjNjtcC_EBY43P5xhMjBG_e9inPi3"
               referrerPolicy="no-referrer"
             />
           </div>
           <div className="max-w-7xl mx-auto px-6 relative z-20 w-full py-20">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -77,14 +105,14 @@ export default function LandingPage() {
                 India's Trusted Partner for PCD Franchise & Third-Party Ayurvedic Manufacturing. WHO-GMP-ISO Certified quality at the intersection of science and tradition.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button 
+                <button
                   onClick={() => scrollToSection('contact')}
                   className="bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-primary-dark active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-primary/30"
                 >
                   Enquire Now
                   <ArrowRight className="w-5 h-5" />
                 </button>
-                <button 
+                <button
                   onClick={() => scrollToSection('products')}
                   className="bg-white text-secondary font-bold px-10 py-4 rounded-xl hover:bg-slate-50 transition-all border border-slate-100 shadow-sm"
                 >
@@ -105,7 +133,7 @@ export default function LandingPage() {
                 { label: "India Presence", value: "PAN" },
                 { label: "GMP-ISO Certified", value: "WHO" }
               ].map((stat, i) => (
-                <motion.div 
+                <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -126,7 +154,7 @@ export default function LandingPage() {
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-12">
               {/* PCD Card */}
-              <motion.div 
+              <motion.div
                 whileHover={{ y: -5 }}
                 className="group relative overflow-hidden rounded-3xl bg-surface-container p-12 transition-all hover:shadow-2xl hover:shadow-primary/5"
               >
@@ -154,7 +182,7 @@ export default function LandingPage() {
               </motion.div>
 
               {/* Third-Party Card */}
-              <motion.div 
+              <motion.div
                 whileHover={{ y: -5 }}
                 className="group relative overflow-hidden rounded-3xl bg-surface-container p-12 transition-all hover:shadow-2xl hover:shadow-secondary/5 border border-transparent hover:border-secondary/10"
               >
@@ -192,7 +220,9 @@ export default function LandingPage() {
                 <h2 className="text-4xl font-extrabold mb-4 tracking-tight">Holistic Wellness Range</h2>
                 <p className="text-slate-600">Exploring the synergy of ancient Ayurvedic wisdom and modern science through our diverse product categories.</p>
               </div>
-              <button className="bg-white text-slate-900 border border-slate-200 font-bold px-8 py-3 rounded-xl hover:bg-slate-50 transition-all">View All Products</button>
+              <a href="https://www.zoicpharmaceuticals.com/product/" target="_blank">
+                <button className="bg-white text-slate-900 border border-slate-200 font-bold px-8 py-3 rounded-xl hover:bg-slate-50 transition-all">View All Products</button>
+              </a>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[800px]">
               {/* Tablets */}
@@ -234,16 +264,16 @@ export default function LandingPage() {
         {/* Manufacturing Authority */}
         <section id="manufacturing" className="py-32 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="order-2 md:order-1"
             >
               <div className="relative rounded-[2rem] overflow-hidden shadow-2xl">
-                <img 
-                  alt="Manufacturing Facility" 
-                  className="w-full aspect-square object-cover" 
+                <img
+                  alt="Manufacturing Facility"
+                  className="w-full aspect-square object-cover"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVcL9UmwtTGlWQRZdZRu7irz0D2E8WdNgXlVSNQVmshL0fNrgoVPVVd2CCTIbUHy1peMa8jQwbNtMEi0iv5fbSErkSSbTte55rjFDKDgjQRZvht-upqxCb_qsQg7YXzI5SplDgqAfSb7Wh06_rsvTRxCriuSmWrg5YwiQOL1rEKEZ59S0OCpFZi1khYepc509vAw0Vv7h18YUyY9vWyqNL0eLj-sE9lfZUEkCKXUCWGYZChb0OcmR3EaQJbLv95UI3Aml0vtFLEbs-"
                   referrerPolicy="no-referrer"
                 />
@@ -293,7 +323,7 @@ export default function LandingPage() {
               { name: "Ananya Sharma", role: "Wellness Brand CEO", text: "Their third-party manufacturing process is seamless. Timely delivery and excellent packaging have helped our brand scale." },
               { name: "Vikram Mehta", role: "Franchise Owner, Kerala", text: "The marketing support and monopoly rights provided by Zoic are exactly what a new entrepreneur needs to succeed." }
             ].map((t, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -327,7 +357,7 @@ export default function LandingPage() {
               <p className="text-slate-400 text-lg mb-10">With a robust distribution network and thousands of franchise partners, Zoic Pharmaceuticals ensures that premium herbal healthcare reaches every corner of India.</p>
               <div className="grid grid-cols-2 gap-8">
                 <div>
-                  <span className="block text-3xl font-bold text-secondary-light">20+</span>
+                  <span className="block text-3xl font-bold text-secondary-light">22+</span>
                   <span className="text-sm text-slate-500 uppercase font-bold tracking-widest">States Reached</span>
                 </div>
                 <div>
@@ -337,9 +367,9 @@ export default function LandingPage() {
               </div>
             </div>
             <div className="relative">
-              <img 
-                alt="India Connectivity" 
-                className="rounded-3xl opacity-60 grayscale hover:grayscale-0 transition-all duration-700 w-full" 
+              <img
+                alt="India Connectivity"
+                className="rounded-3xl opacity-60 grayscale hover:grayscale-0 transition-all duration-700 w-full"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZspmhZ8mUEZTJhI1tEiwfYukL9Ya-APTsLSwcv55fI7PsjFzmjyT1i1YrOLUfn-yrh8glwFZPLoXqTkxqGy2lF1BiYV37Fh-BILFXp2PIkKv94GA_8Wl0e5ovMr6iuS9I0hAlGb0vQm_6s7elw_iauDY5getdXnHo83Nt3xyn0xmkxwKYpqbwHgn-M7p9KBgrPyPBpT7APjq7Z9OEUAV_8N9lkEzYfTW_v4F008Dzg2yZsTQmxyXfRP7sTO3K1iy-420_YY7wY-y0"
                 referrerPolicy="no-referrer"
               />
@@ -350,7 +380,7 @@ export default function LandingPage() {
         {/* Lead Generation Form */}
         <section id="contact" className="py-32 bg-slate-50">
           <div className="max-w-5xl mx-auto px-6">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -363,30 +393,30 @@ export default function LandingPage() {
               <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-slate-900 ml-1">Full Name</label>
-                  <input required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Enter your name" type="text"/>
+                  <input name="name" required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Enter your name" type="text" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-slate-900 ml-1">Email Address</label>
-                  <input required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="email@example.com" type="email"/>
+                  <input name="email" required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="email@example.com" type="email" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-slate-900 ml-1">Phone Number</label>
-                  <input required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="+91 00000 00000" type="tel"/>
+                  <input name="phone" required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="+91 00000 00000" type="tel" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-slate-900 ml-1">City</label>
-                  <input required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Enter your city" type="text"/>
+                  <input name="city" required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Enter your city" type="text" />
                 </div>
                 <div className="md:col-span-2 space-y-2">
                   <label className="text-sm font-bold text-slate-900 ml-1">Inquiry Type & Message</label>
-                  <textarea required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Tell us about your business requirement" rows={4}></textarea>
+                  <textarea name="message" required className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Tell us about your business requirement" rows={4}></textarea>
                 </div>
                 <div className="md:col-span-2 mt-4">
-                  <button 
-                    disabled={isSubmitting}
+                  <button
+                    disabled={loading}
                     className="w-full bg-primary text-white font-bold py-5 rounded-xl text-lg hover:bg-primary-dark active:scale-[0.98] transition-all disabled:opacity-50 shadow-xl shadow-primary/20"
                   >
-                    {isSubmitting ? "Submitting..." : "Submit Business Inquiry"}
+                    {loading ? "Submitting..." : "Submit Business Inquiry"}
                   </button>
                 </div>
               </form>
@@ -439,7 +469,7 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 py-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-          <p>© 1990-2024 Zoic Pharmaceuticals. All Rights Reserved. WHO-GMP-ISO Certified Unit.</p>
+          <p>© 1990-2026 Zoic Pharmaceuticals. All Rights Reserved. WHO-GMP-ISO Certified Unit.</p>
           <p>Made with Science & Heritage.</p>
         </div>
       </footer>

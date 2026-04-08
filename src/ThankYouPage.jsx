@@ -1,11 +1,33 @@
 import { motion } from "motion/react";
 import { CheckCircle, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function ThankYouPage() {
+  useEffect(() => {
+    const gtag_report_conversion = (url) => {
+      const callback = () => {
+        if (url) {
+          window.location = url;
+        }
+      };
+
+      if (window.gtag) {
+        window.gtag('event', 'conversion', {
+          send_to: 'AW-747198314/obWbCP7n25YcEOqupeQC',
+          event_callback: callback
+        });
+      }
+    };
+
+    // Fire conversion when page loads
+    gtag_report_conversion();
+
+  }, []);
+
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center px-6">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         className="max-w-lg w-full bg-white rounded-[2.5rem] p-12 text-center shadow-2xl shadow-primary/5 border border-slate-100"
@@ -17,7 +39,7 @@ export default function ThankYouPage() {
         <p className="text-lg text-slate-600 mb-10">
           Your inquiry has been successfully submitted. Our business development team will review your requirements and get back to you within 24 hours.
         </p>
-        <Link 
+        <Link
           to="/"
           className="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary-dark active:scale-95 transition-all shadow-xl shadow-primary/20"
         >
