@@ -826,7 +826,7 @@ export default function LandingPage() {
                     name="phone"
                     required
                     className="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                    placeholder="+91 00000 00000"
+                    placeholder="+91 99xxx xxx08"
                     type="tel"
                   />
                 </div>
@@ -876,7 +876,7 @@ export default function LandingPage() {
       {/* Sticky Mobile Buttons */}
       <div className="fixed bottom-4 left-4 right-4 z-50 flex md:hidden gap-3">
         <a
-          href="tel:+919999999999"
+          href="tel:+919815846085"
           className="flex-1 bg-primary text-white py-4 rounded-2xl text-center font-bold shadow-2xl flex items-center justify-center gap-2"
         >
           <Phone className="w-5 h-5" />
@@ -884,7 +884,7 @@ export default function LandingPage() {
         </a>
 
         <a
-          href="https://wa.me/919999999999"
+          href="https://wa.me/919815846085"
           target="_blank"
           className="flex-1 bg-green-500 text-white py-4 rounded-2xl text-center font-bold shadow-2xl flex items-center justify-center gap-2"
         >
