@@ -1,29 +1,8 @@
 import { motion } from "motion/react";
 import { CheckCircle, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 
 export default function ThankYouPage() {
-  useEffect(() => {
-    const gtag_report_conversion = (url) => {
-      const callback = () => {
-        if (url) {
-          window.location = url;
-        }
-      };
-
-      if (window.gtag) {
-        window.gtag('event', 'conversion', {
-          send_to: 'AW-747198314/obWbCP7n25YcEOqupeQC',
-          event_callback: callback
-        });
-      }
-    };
-
-    // Fire conversion when page loads
-    gtag_report_conversion();
-
-  }, []);
 
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center px-6">
